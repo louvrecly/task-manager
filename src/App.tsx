@@ -57,6 +57,7 @@ const DUMMY_TASKS: Task[] = [
 const App = () => {
   const [tasks, setTasks] = useState(DUMMY_TASKS);
 
+  const maxId = useMemo(() => tasks.length, [tasks]);
   const sortedTasks = useMemo(
     () =>
       tasks.sort(
@@ -71,7 +72,7 @@ const App = () => {
 
   return (
     <div>
-      <NavBar maxId={tasks.length} onSubmitTask={handleSubmitTask} />
+      <NavBar maxId={maxId} onSubmitTask={handleSubmitTask} />
 
       <div className="u-p-3 sm:u-px-5">
         <TasksList tasks={sortedTasks} />

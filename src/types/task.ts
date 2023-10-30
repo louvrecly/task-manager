@@ -16,10 +16,14 @@ export interface TaskFormValues {
   category: Category;
 }
 
+export function formatDateString(date?: Date) {
+  return (date ?? new Date()).toISOString().split('T')[0];
+}
+
 export function convertTaskToFormValues(task: Task): TaskFormValues {
   return {
     ...task,
-    dueDate: task.dueDate.toISOString().split('T')[0],
+    dueDate: formatDateString(task.dueDate),
   };
 }
 
