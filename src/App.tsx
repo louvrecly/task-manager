@@ -15,7 +15,10 @@ const App = () => {
   const [showForm, setShowForm] = useState(false);
   const [tasks, setTasks] = useState(initialTasks);
 
-  const maxId = useMemo(() => tasks.length, [tasks]);
+  const maxId = useMemo(
+    () => (tasks.length ? Math.max(...tasks.map((task) => task.id)) : 0),
+    [tasks],
+  );
   const sortedTasks = useMemo(
     () =>
       tasks.sort(
@@ -29,6 +32,15 @@ const App = () => {
     setShowForm(false);
   }, []);
 
+  const removeTask = useCallback(
+    (taskId: number) => () => {
+      setTasks((existingTasks) =>
+        existingTasks.filter((task) => task.id !== taskId),
+      );
+    },
+    [],
+  );
+
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(sortedTasks));
   }, [sortedTasks]);
@@ -38,7 +50,7 @@ const App = () => {
       <div className="u-min-h-screen u-flex u-flex-col u-items-stretch">
         <NavBar onButtonClick={() => setShowForm((showForm) => !showForm)} />
 
-        <TasksList tasks={sortedTasks} />
+        <TasksList tasks={sortedTasks} onCloseButtonClick={removeTask} />
       </div>
 
       {showForm && (
