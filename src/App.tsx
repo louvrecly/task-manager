@@ -3,7 +3,7 @@ import NavBar from './components/NavBar';
 import TasksList from './components/TasksList';
 import Drawer from './components/Drawer';
 import TaskForm from './components/TaskForm';
-import { Task, convertFormValuesToTask } from './types/task';
+import { Task, convertFormValuesToTask, createEmptyTask } from './types/task';
 
 const App = () => {
   const tasksString = localStorage.getItem('tasks');
@@ -12,7 +12,7 @@ const App = () => {
     convertFormValuesToTask,
   );
 
-  const [showForm, setShowForm] = useState(false);
+  const [activeTaskId, setActiveTaskId] = useState(0);
   const [tasks, setTasks] = useState(initialTasks);
 
   const maxId = useMemo(
@@ -27,10 +27,37 @@ const App = () => {
     [tasks],
   );
 
-  const handleSubmitTask = useCallback((task: Task) => {
-    setTasks((existingTasks) => [...existingTasks, task]);
-    setShowForm(false);
-  }, []);
+  const activeTask = useMemo(
+    () =>
+      !activeTaskId
+        ? null
+        : tasks.find((task) => task.id === activeTaskId) ??
+          createEmptyTask(maxId),
+    [activeTaskId, maxId, tasks],
+  );
+
+  const handleSubmitTask = useCallback(
+    (task: Task) => {
+      if (task.id === activeTaskId) {
+        const existingTasks = tasks.filter(
+          (existingTask) => existingTask.id !== task.id,
+        );
+        setTasks([...existingTasks, task]);
+      } else {
+        setTasks((existingTasks) => [...existingTasks, task]);
+      }
+
+      setActiveTaskId(0);
+    },
+    [activeTaskId, tasks],
+  );
+
+  const editTask = useCallback(
+    (taskId: number) => () => {
+      setActiveTaskId(taskId);
+    },
+    [],
+  );
 
   const removeTask = useCallback(
     (taskId: number) => () => {
@@ -48,14 +75,18 @@ const App = () => {
   return (
     <div>
       <div className="u-min-h-screen u-flex u-flex-col u-items-stretch">
-        <NavBar onButtonClick={() => setShowForm((showForm) => !showForm)} />
+        <NavBar onButtonClick={() => setActiveTaskId(-1)} />
 
-        <TasksList tasks={sortedTasks} onCloseButtonClick={removeTask} />
+        <TasksList
+          tasks={sortedTasks}
+          onEdit={editTask}
+          onRemove={removeTask}
+        />
       </div>
 
-      {showForm && (
-        <Drawer onCloseButtonClick={() => setShowForm(false)}>
-          <TaskForm maxId={maxId} onSubmitTask={handleSubmitTask} />
+      {!!activeTask && (
+        <Drawer onCloseButtonClick={() => setActiveTaskId(0)}>
+          <TaskForm task={activeTask} onSubmitTask={handleSubmitTask} />
         </Drawer>
       )}
     </div>

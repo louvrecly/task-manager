@@ -3,13 +3,15 @@ import { Task } from '../../types/task';
 interface TaskItemProps {
   task: Task;
   className?: string;
-  onCloseButtonClick: (taskId: number) => () => void;
+  onEdit: (taskId: number) => () => void;
+  onRemove: (taskId: number) => () => void;
 }
 
 const TaskItem = ({
   task,
   className = '',
-  onCloseButtonClick,
+  onEdit,
+  onRemove,
 }: TaskItemProps) => {
   return (
     <div
@@ -17,7 +19,14 @@ const TaskItem = ({
     >
       <button
         className="u-absolute u-top-0 u-right-0 u-py-3 u-px-5 u-font-bold u-bg-transparent u-rounded-full"
-        onClick={onCloseButtonClick(task.id)}
+        onClick={onEdit(task.id)}
+      >
+        E
+      </button>
+
+      <button
+        className="u-absolute u-bottom-0 u-right-0 u-py-3 u-px-5 u-font-bold u-bg-transparent u-rounded-full"
+        onClick={onRemove(task.id)}
       >
         X
       </button>

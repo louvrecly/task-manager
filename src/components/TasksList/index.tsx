@@ -3,10 +3,11 @@ import TaskItem from './TaskItem';
 
 interface TasksListProps {
   tasks: Task[];
-  onCloseButtonClick: (taskId: number) => () => void;
+  onEdit: (taskId: number) => () => void;
+  onRemove: (taskId: number) => () => void;
 }
 
-const TasksList = ({ tasks, onCloseButtonClick }: TasksListProps) => {
+const TasksList = ({ tasks, onEdit, onRemove }: TasksListProps) => {
   if (!tasks.length)
     return (
       <div className="u-p-5 u-flex-1 u-flex u-justify-center u-items-center">
@@ -20,7 +21,8 @@ const TasksList = ({ tasks, onCloseButtonClick }: TasksListProps) => {
         <TaskItem
           key={task.id}
           task={task}
-          onCloseButtonClick={onCloseButtonClick}
+          onEdit={onEdit}
+          onRemove={onRemove}
         />
       ))}
     </div>

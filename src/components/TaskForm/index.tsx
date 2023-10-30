@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
+import { number, object, string } from 'yup';
+import FormField from './FormField';
 import {
   ALL_CATEGORIES,
   Task,
@@ -8,11 +10,9 @@ import {
   convertTaskToFormValues,
   formatDateString,
 } from '../../types/task';
-import { number, object, string } from 'yup';
-import FormField from './FormField';
 
 interface TaskFormProps {
-  maxId: number;
+  task: Task;
   onSubmitTask: (task: Task) => void;
 }
 
@@ -25,16 +25,10 @@ const taskFormValuesSchema = object<TaskFormValues>({
     .default(() => 'Personal'),
 });
 
-const TaskForm = ({ maxId, onSubmitTask }: TaskFormProps) => {
+const TaskForm = ({ task, onSubmitTask }: TaskFormProps) => {
   const initialValues: TaskFormValues = useMemo(
-    () =>
-      convertTaskToFormValues({
-        id: maxId + 1,
-        title: '',
-        category: 'Personal',
-        dueDate: new Date(),
-      }),
-    [maxId],
+    () => convertTaskToFormValues(task),
+    [task],
   );
 
   const onSubmit = (

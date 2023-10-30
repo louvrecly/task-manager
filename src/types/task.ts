@@ -33,3 +33,12 @@ export function convertFormValuesToTask(formValues: TaskFormValues): Task {
     dueDate: new Date(formValues.dueDate),
   };
 }
+
+export function createEmptyTask(maxId: number): Task {
+  return {
+    id: maxId + 1,
+    title: '',
+    category: 'Personal',
+    dueDate: new Date(),
+  };
+}
