@@ -18,9 +18,13 @@ const FormField = ({ id, name, label, ...props }: FormFieldProps) => {
         />
       </div>
 
-      <div className="u-absolute u-top-full u-inset-x-0 u-py-2 u-px-3 u-bg-zinc-950/70 u-text-red-500 u-text-sm u-rounded-lg u-z-20">
-        <ErrorMessage name={name} />
-      </div>
+      <ErrorMessage name={name}>
+        {(message) => (
+          <div className="u-absolute u-top-full u-inset-x-0 u-py-2 u-px-3 u-bg-zinc-950/70 u-text-red-500 u-text-sm u-rounded-lg u-z-10">
+            {message}
+          </div>
+        )}
+      </ErrorMessage>
     </div>
   );
 };
