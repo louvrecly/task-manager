@@ -76,12 +76,10 @@ const App = () => {
 
   return (
     <div>
-      <div>
+      <div className="u-min-h-screen u-flex u-flex-col u-items-stretch">
         <NavBar onButtonClick={() => setShowForm((showForm) => !showForm)} />
 
-        <div className="u-p-3 sm:u-px-5">
-          <TasksList tasks={sortedTasks} />
-        </div>
+        <TasksList tasks={sortedTasks} />
       </div>
 
       {showForm && (
