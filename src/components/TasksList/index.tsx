@@ -15,7 +15,7 @@ const TasksList = ({ tasks, onCloseButtonClick }: TasksListProps) => {
     );
 
   return (
-    <div className="u-p-3 u-flex-1 sm:u-px-5">
+    <div className="u-mx-auto u-p-3 u-w-full u-max-w-4xl u-flex-1 sm:u-px-10">
       {tasks.map((task) => (
         <TaskItem
           key={task.id}

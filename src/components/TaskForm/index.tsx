@@ -47,7 +47,7 @@ const TaskForm = ({ maxId, onSubmitTask }: TaskFormProps) => {
   };
 
   return (
-    <div className="u-pt-20 u-pb-3 u-px-5 u-bg-zinc-950/70 u-flex-1">
+    <div className="u-pt-20 u-pb-3 u-px-5 u-bg-zinc-950/70 u-flex-1 u-flex u-justify-center u-items-center">
       <Formik
         initialValues={initialValues}
         validationSchema={taskFormValuesSchema}
