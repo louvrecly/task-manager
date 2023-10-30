@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import NavBar from './components/NavBar';
 import TasksList from './components/TasksList';
+import Drawer from './components/Drawer';
+import TaskForm from './components/TaskForm';
 import { Task } from './types/task';
 
 const DUMMY_TASKS: Task[] = [
@@ -55,6 +57,7 @@ const DUMMY_TASKS: Task[] = [
 ];
 
 const App = () => {
+  const [showForm, setShowForm] = useState(false);
   const [tasks, setTasks] = useState(DUMMY_TASKS);
 
   const maxId = useMemo(() => tasks.length, [tasks]);
@@ -68,15 +71,24 @@ const App = () => {
 
   const handleSubmitTask = useCallback((task: Task) => {
     setTasks((existingTasks) => [...existingTasks, task]);
+    setShowForm(false);
   }, []);
 
   return (
     <div>
-      <NavBar maxId={maxId} onSubmitTask={handleSubmitTask} />
+      <div>
+        <NavBar onButtonClick={() => setShowForm((showForm) => !showForm)} />
 
-      <div className="u-p-3 sm:u-px-5">
-        <TasksList tasks={sortedTasks} />
+        <div className="u-p-3 sm:u-px-5">
+          <TasksList tasks={sortedTasks} />
+        </div>
       </div>
+
+      {showForm && (
+        <Drawer onCloseButtonClick={() => setShowForm(false)}>
+          <TaskForm maxId={maxId} onSubmitTask={handleSubmitTask} />
+        </Drawer>
+      )}
     </div>
   );
 };
