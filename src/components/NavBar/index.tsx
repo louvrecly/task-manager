@@ -1,8 +1,14 @@
 import { useState } from 'react';
 import Drawer from './Drawer';
 import TaskForm from './TaskForm';
+import { Task } from '../../types/task';
 
-const NavBar = () => {
+interface NavBarProps {
+  maxId: number;
+  onSubmitTask: (task: Task) => void;
+}
+
+const NavBar = ({ maxId, onSubmitTask }: NavBarProps) => {
   const [showForm, setShowForm] = useState(false);
 
   return (
@@ -17,7 +23,7 @@ const NavBar = () => {
 
       {showForm && (
         <Drawer onCloseButtonClick={() => setShowForm(false)}>
-          <TaskForm />
+          <TaskForm maxId={maxId} onSubmitTask={onSubmitTask} />
         </Drawer>
       )}
     </nav>

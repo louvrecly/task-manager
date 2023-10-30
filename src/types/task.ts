@@ -1,10 +1,31 @@
-const taskCategories = ['Work', 'Personal', 'School'] as const;
+export const ALL_CATEGORIES = ['Work', 'Personal', 'School'] as const;
 
-type TaskCategory = (typeof taskCategories)[number];
+export type Category = (typeof ALL_CATEGORIES)[number];
 
 export type Task = {
   id: number;
   title: string;
   dueDate: Date;
-  category: TaskCategory;
+  category: Category;
 };
+
+export interface TaskFormValues {
+  id: number;
+  title: string;
+  dueDate: string;
+  category: Category;
+}
+
+export function convertTaskToFormValues(task: Task): TaskFormValues {
+  return {
+    ...task,
+    dueDate: task.dueDate.toISOString().split('T')[0],
+  };
+}
+
+export function convertFormValuesToTask(formValues: TaskFormValues): Task {
+  return {
+    ...formValues,
+    dueDate: new Date(formValues.dueDate),
+  };
+}

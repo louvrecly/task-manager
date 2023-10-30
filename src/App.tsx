@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import NavBar from './components/NavBar';
 import TasksList from './components/TasksList';
 import { Task } from './types/task';
@@ -55,7 +55,8 @@ const DUMMY_TASKS: Task[] = [
 ];
 
 const App = () => {
-  const [tasks] = useState(DUMMY_TASKS);
+  const [tasks, setTasks] = useState(DUMMY_TASKS);
+
   const sortedTasks = useMemo(
     () =>
       tasks.sort(
@@ -64,9 +65,13 @@ const App = () => {
     [tasks],
   );
 
+  const handleSubmitTask = useCallback((task: Task) => {
+    setTasks((existingTasks) => [...existingTasks, task]);
+  }, []);
+
   return (
     <div>
-      <NavBar />
+      <NavBar maxId={tasks.length} onSubmitTask={handleSubmitTask} />
 
       <div className="u-p-3 sm:u-px-5">
         <TasksList tasks={sortedTasks} />

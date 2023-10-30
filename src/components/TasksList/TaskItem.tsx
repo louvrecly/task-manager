@@ -14,7 +14,7 @@ const TaskItem = ({ task, className = '' }: TaskItemProps) => {
 
       <p className="u-mb-2 u-text-xs">Category: {task.category}</p>
 
-      <p className="u-text-xs">Due: {task.dueDate.toLocaleString()}</p>
+      <p className="u-text-xs">Due: {task.dueDate.toDateString()}</p>
     </div>
   );
 };
