@@ -2,6 +2,8 @@ export const ALL_CATEGORIES = ['Work', 'Personal', 'School'] as const;
 
 export type Category = (typeof ALL_CATEGORIES)[number];
 
+export type TaskStatus = 'upcoming' | 'soon' | 'due';
+
 export type Task = {
   id: number;
   title: string;

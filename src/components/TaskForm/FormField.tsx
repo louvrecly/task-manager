@@ -20,7 +20,7 @@ const FormField = ({ id, name, label, ...props }: FormFieldProps) => {
 
       <ErrorMessage name={name}>
         {(message) => (
-          <div className="u-absolute u-top-full u-inset-x-0 u-py-2 u-px-3 u-bg-zinc-950/70 u-text-red-500 u-text-sm u-rounded-lg u-z-10">
+          <div className="u-absolute u-top-full u-inset-x-0 u-py-2 u-px-3 u-bg-zinc-950/70 u-text-rose-600 u-text-sm u-rounded-lg u-z-10">
             {message}
           </div>
         )}

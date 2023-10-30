@@ -13,7 +13,7 @@ const App = () => {
   );
 
   const [activeTaskId, setActiveTaskId] = useState(0);
-  const [tasks, setTasks] = useState(initialTasks);
+  const [tasks, setTasks] = useState<Task[]>(initialTasks);
 
   const maxId = useMemo(
     () => (tasks.length ? Math.max(...tasks.map((task) => task.id)) : 0),

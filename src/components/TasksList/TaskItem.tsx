@@ -1,4 +1,5 @@
-import { Task } from '../../types/task';
+import { useMemo } from 'react';
+import { Task, TaskStatus } from '../../types/task';
 
 interface TaskItemProps {
   task: Task;
@@ -7,12 +8,24 @@ interface TaskItemProps {
   onRemove: (taskId: number) => () => void;
 }
 
+const threeDaysInMilliseconds = 3 * 24 * 60 * 60 * 1000;
+
 const TaskItem = ({
   task,
   className = '',
   onEdit,
   onRemove,
 }: TaskItemProps) => {
+  const taskStatus = useMemo<TaskStatus>(() => {
+    const dueDateTime = task.dueDate.getTime();
+    const currentTime = new Date().getTime();
+    return dueDateTime < currentTime
+      ? 'due'
+      : dueDateTime - currentTime <= threeDaysInMilliseconds
+      ? 'soon'
+      : 'upcoming';
+  }, [task.dueDate]);
+
   return (
     <div
       className={`u-relative u-mb-3 u-py-3 u-px-5 u-bg-zinc-950/70 u-rounded-lg ${className}`}
@@ -35,7 +48,17 @@ const TaskItem = ({
 
       <p className="u-mb-2 u-text-xs">Category: {task.category}</p>
 
-      <p className="u-text-xs">Due: {task.dueDate.toDateString()}</p>
+      <p
+        className={`u-text-xs ${
+          taskStatus === 'upcoming'
+            ? 'u-text-emerald-600'
+            : taskStatus === 'soon'
+            ? 'u-text-yellow-500'
+            : 'u-text-rose-600'
+        }`}
+      >
+        Due: {task.dueDate.toDateString()}
+      </p>
     </div>
   );
 };
