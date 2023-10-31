@@ -4,6 +4,7 @@ import { number, object, string } from 'yup';
 import FormField from './FormField';
 import {
   ALL_CATEGORIES,
+  ALL_CATEGORY_KEYS,
   Task,
   TaskFormValues,
   convertFormValuesToTask,
@@ -21,8 +22,8 @@ const taskFormValuesSchema = object<TaskFormValues>({
   title: string().required('Required'),
   dueDate: string().default(() => formatDateString()),
   category: string()
-    .oneOf(ALL_CATEGORIES)
-    .default(() => 'Personal'),
+    .oneOf(ALL_CATEGORY_KEYS)
+    .default(() => 'personal'),
 });
 
 const TaskForm = ({ task, onSubmitTask }: TaskFormProps) => {
@@ -64,8 +65,8 @@ const TaskForm = ({ task, onSubmitTask }: TaskFormProps) => {
 
           <FormField id="category" name="category" label="Category" as="select">
             {ALL_CATEGORIES.map((category) => (
-              <option key={category} value={category}>
-                {category}
+              <option key={category.key} value={category.key}>
+                {category.title} {category.emoji}
               </option>
             ))}
           </FormField>

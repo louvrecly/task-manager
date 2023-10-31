@@ -1,6 +1,22 @@
-export const ALL_CATEGORIES = ['Work', 'Personal', 'School'] as const;
+export const ALL_CATEGORY_KEYS = ['personal', 'school', 'work'] as const;
 
-export type Category = (typeof ALL_CATEGORIES)[number];
+type CategoryKey = (typeof ALL_CATEGORY_KEYS)[number];
+
+export type Category = {
+  key: CategoryKey;
+  title: string;
+  emoji: string;
+};
+
+const CATEGORIES_MAP: Record<CategoryKey, Category> = {
+  personal: { key: 'personal', title: 'Personal', emoji: '👟' },
+  school: { key: 'school', title: 'School', emoji: '🎓' },
+  work: { key: 'work', title: 'Work', emoji: '💼' },
+};
+
+export const ALL_CATEGORIES = ALL_CATEGORY_KEYS.map(
+  (categoryKey) => CATEGORIES_MAP[categoryKey],
+);
 
 export type TaskStatus = 'upcoming' | 'soon' | 'due';
 
@@ -15,7 +31,7 @@ export interface TaskFormValues {
   id: number;
   title: string;
   dueDate: string;
-  category: Category;
+  category: CategoryKey;
 }
 
 export function formatDateString(date?: Date) {
@@ -26,6 +42,7 @@ export function convertTaskToFormValues(task: Task): TaskFormValues {
   return {
     ...task,
     dueDate: formatDateString(task.dueDate),
+    category: task.category.key,
   };
 }
 
@@ -33,6 +50,7 @@ export function convertFormValuesToTask(formValues: TaskFormValues): Task {
   return {
     ...formValues,
     dueDate: new Date(formValues.dueDate),
+    category: CATEGORIES_MAP[formValues.category],
   };
 }
 
@@ -40,7 +58,7 @@ export function createEmptyTask(maxId: number): Task {
   return {
     id: maxId + 1,
     title: '',
-    category: 'Personal',
+    category: CATEGORIES_MAP.personal,
     dueDate: new Date(),
   };
 }

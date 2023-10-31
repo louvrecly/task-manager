@@ -3,10 +3,15 @@ import NavBar from './components/NavBar';
 import TasksList from './components/TasksList';
 import Drawer from './components/Drawer';
 import TaskForm from './components/TaskForm';
-import { Task, convertFormValuesToTask, createEmptyTask } from './types/task';
+import {
+  Task,
+  convertFormValuesToTask,
+  convertTaskToFormValues,
+  createEmptyTask,
+} from './types/task';
 
 const App = () => {
-  const tasksString = localStorage.getItem('tasks');
+  const tasksString = localStorage.getItem('saved-tasks');
 
   const initialTasks: Task[] = JSON.parse(tasksString ?? '[]').map(
     convertFormValuesToTask,
@@ -69,7 +74,10 @@ const App = () => {
   );
 
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(sortedTasks));
+    localStorage.setItem(
+      'saved-tasks',
+      JSON.stringify(sortedTasks.map(convertTaskToFormValues)),
+    );
   }, [sortedTasks]);
 
   return (

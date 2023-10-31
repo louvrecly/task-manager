@@ -46,7 +46,9 @@ const TaskItem = ({
 
       <h2 className="u-mb-2 u-font-bold">{task.title}</h2>
 
-      <p className="u-mb-2 u-text-xs">Category: {task.category}</p>
+      <p className="u-mb-2 u-text-xs">
+        {task.category.emoji} {task.category.title}
+      </p>
 
       <p
         className={`u-text-xs ${
